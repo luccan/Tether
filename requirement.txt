@@ -1,0 +1,11 @@
+Login: 2 Weeks - 7 Apr 2016
+- 3 type of users: User (student), Tutor, SuperAdmin
+- With Facebook?
+- Name
+- Profile Picture
+- Location
+- 
+
+Scheduling:
+- 
+- 
