@@ -19,6 +19,15 @@ Public Module BundleConfig
                   "~/Scripts/bootstrap.js",
                   "~/Scripts/respond.js"))
 
+        bundles.Add(New ScriptBundle("~/Scripts/fullcalendar").Include(
+                  "~/Scripts/moment.min.js",
+                  "~/Scripts/fullcalendar.js"))
+        bundles.Add(New StyleBundle("~/Content/fullcalendar").Include(
+                  "~/Content/cupertino/jquery-ui.min.css",
+                  "~/Content/fullcalendar.css"))
+        bundles.Add(New StyleBundle("~/Content/fullcalendarprint").Include(
+                  "~/Content/fullcalendar.print.css"))
+
         bundles.Add(New StyleBundle("~/Content/css").Include(
                   "~/Content/bootstrap.css",
                   "~/Content/site.css"))
