@@ -24,7 +24,8 @@ Public Module BundleConfig
                   "~/Scripts/fullcalendar.js"))
         bundles.Add(New StyleBundle("~/Content/fullcalendar").Include(
                   "~/Content/cupertino/jquery-ui.min.css",
-                  "~/Content/fullcalendar.css"))
+                  "~/Content/fullcalendar.css",
+                  "~/Content/tetherfullcalendar.css"))
         bundles.Add(New StyleBundle("~/Content/fullcalendarprint").Include(
                   "~/Content/fullcalendar.print.css"))
 

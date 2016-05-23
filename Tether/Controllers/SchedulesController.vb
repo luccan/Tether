@@ -7,6 +7,8 @@ Imports System.Net
 Imports System.Web
 Imports System.Web.Mvc
 Imports Tether
+Imports Microsoft.AspNet.Identity
+Imports System.Web.Script.Serialization
 
 Namespace Controllers
     Public Class SchedulesController
@@ -18,6 +20,10 @@ Namespace Controllers
         Function Index() As ActionResult
             'Dim schedules = db.Schedules.Include(Function(s) s.Student).Include(Function(s) s.Tutor)
             'Return View(schedules.ToList())
+            Dim UserId As String = User.Identity.GetUserId()
+            Dim schedules = db.Schedules.Where(Function(m) m.StudentId = UserId Or m.TutorId = UserId).ToList()
+            Dim js As JavaScriptSerializer = New JavaScriptSerializer()
+            ViewBag.schedulesJson = js.Serialize(schedules.Select(Function(s) s.JsonSerializable(Url.Content("~"))))
             Return View()
         End Function
 
@@ -35,8 +41,8 @@ Namespace Controllers
 
         ' GET: Schedules/Create
         Function Create() As ActionResult
-            ViewBag.StudentId = New SelectList(db.AspNetUsers, "Id", "Id")
-            ViewBag.TutorId = New SelectList(db.AspNetUsers, "Id", "Id")
+            ViewBag.StudentId = New SelectList(db.AspNetUsers, "Id", "UserName")
+            ViewBag.TutorId = New SelectList(db.AspNetUsers, "Id", "UserName")
             Return View()
         End Function
 
@@ -51,8 +57,8 @@ Namespace Controllers
                 db.SaveChanges()
                 Return RedirectToAction("Index")
             End If
-            ViewBag.StudentId = New SelectList(db.AspNetUsers, "Id", "Id", schedule.StudentId)
-            ViewBag.TutorId = New SelectList(db.AspNetUsers, "Id", "Id", schedule.TutorId)
+            ViewBag.StudentList = New SelectList(db.AspNetUsers, "Id", "UserName", schedule.StudentId)
+            ViewBag.TutorList = New SelectList(db.AspNetUsers, "Id", "UserName", schedule.TutorId)
             Return View(schedule)
         End Function
 
@@ -65,8 +71,8 @@ Namespace Controllers
             If IsNothing(schedule) Then
                 Return HttpNotFound()
             End If
-            ViewBag.StudentId = New SelectList(db.AspNetUsers, "Id", "Id", schedule.StudentId)
-            ViewBag.TutorId = New SelectList(db.AspNetUsers, "Id", "Id", schedule.TutorId)
+            ViewBag.StudentList = New SelectList(db.AspNetUsers, "Id", "UserName", schedule.StudentId)
+            ViewBag.TutorList = New SelectList(db.AspNetUsers, "Id", "UserName", schedule.TutorId)
             Return View(schedule)
         End Function
 
@@ -75,14 +81,14 @@ Namespace Controllers
         'more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         <HttpPost()>
         <ValidateAntiForgeryToken()>
-        Function Edit(<Bind(Include:="Id,TutorId,StudentId,StartTime,EndTime,Status")> ByVal schedule As Schedule) As ActionResult
+        Function Edit(<Bind(Include:="Id,TutorId,StudentId,Day,StartTime,EndTime,Status")> ByVal schedule As Schedule) As ActionResult
             If ModelState.IsValid Then
                 db.Entry(schedule).State = EntityState.Modified
                 db.SaveChanges()
                 Return RedirectToAction("Index")
             End If
-            ViewBag.StudentId = New SelectList(db.AspNetUsers, "Id", "Id", schedule.StudentId)
-            ViewBag.TutorId = New SelectList(db.AspNetUsers, "Id", "Id", schedule.TutorId)
+            ViewBag.StudentList = New SelectList(db.AspNetUsers, "Id", "UserName", schedule.StudentId)
+            ViewBag.TutorList = New SelectList(db.AspNetUsers, "Id", "UserName", schedule.TutorId)
             Return View(schedule)
         End Function
 

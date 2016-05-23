@@ -246,6 +246,7 @@
     <Content Include="Content\cupertino\jquery-ui.min.css" />
     <Content Include="Content\fullcalendar.css" />
     <Content Include="Content\fullcalendar.print.css" />
+    <Content Include="Content\tetherfullcalendar.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -285,7 +286,6 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.vbhtml" />
     <Content Include="Views\Shared\Lockout.vbhtml" />
     <Content Include="Views\Shared\_LoginPartial.vbhtml" />
-    <Content Include="Views\Schedule\Index.vbhtml" />
     <Content Include="Views\Schedules\Create.vbhtml" />
     <Content Include="Views\Schedules\Delete.vbhtml" />
     <Content Include="Views\Schedules\Details.vbhtml" />
