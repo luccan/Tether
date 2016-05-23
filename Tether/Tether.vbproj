@@ -190,13 +190,15 @@
     <Compile Include="App_Start\Startup.Auth.vb" />
     <Compile Include="Controllers\AccountController.vb" />
     <Compile Include="Controllers\ManageController.vb" />
-    <Compile Include="Controllers\ScheduleController.vb" />
+    <Compile Include="Controllers\SchedulesController.vb" />
     <Compile Include="Global.asax.vb">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.vb" />
+    <Compile Include="Models\AspNetUsers.vb" />
     <Compile Include="Models\IdentityModels.vb" />
     <Compile Include="Models\ManageViewModels.vb" />
+    <Compile Include="Models\ScheduleModels.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -284,6 +286,11 @@
     <Content Include="Views\Shared\Lockout.vbhtml" />
     <Content Include="Views\Shared\_LoginPartial.vbhtml" />
     <Content Include="Views\Schedule\Index.vbhtml" />
+    <Content Include="Views\Schedules\Create.vbhtml" />
+    <Content Include="Views\Schedules\Delete.vbhtml" />
+    <Content Include="Views\Schedules\Details.vbhtml" />
+    <Content Include="Views\Schedules\Edit.vbhtml" />
+    <Content Include="Views\Schedules\Index.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
