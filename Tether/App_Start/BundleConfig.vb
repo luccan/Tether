@@ -19,6 +19,9 @@ Public Module BundleConfig
                   "~/Scripts/bootstrap.js",
                   "~/Scripts/respond.js"))
 
+        bundles.Add(New StyleBundle("~/Content/cn_component").Include(
+                  "~/Content/cn_component.css"))
+
         bundles.Add(New ScriptBundle("~/Scripts/fullcalendar").Include(
                   "~/Scripts/moment.min.js",
                   "~/Scripts/fullcalendar.js"))

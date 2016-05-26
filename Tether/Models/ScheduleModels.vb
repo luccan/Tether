@@ -13,15 +13,11 @@ Public Class Schedule
     <Key>
     Public Property Id As Long
 
-    Public Property TutorId As String
+    Public Property AspNetUserId As String
 
-    <ForeignKey("TutorId")>
-    Public Property Tutor As AspNetUser
-
-    Public Property StudentId As String
-
-    <ForeignKey("StudentId")>
-    Public Property Student As AspNetUser
+    <Required>
+    <ForeignKey("AspNetUserId")>
+    Public Property AspNetUser As AspNetUser
 
     <Required>
     Public Property Day As DayOfWeek
@@ -35,9 +31,11 @@ Public Class Schedule
     <Required>
     Public Property Status As ScheduleStatus
 
+    'Public Property Booking As Booking
+
     Public Function JsonSerializable(RootUrl As String) As Object
         Dim Title = "Free"
-        If Not (IsNothing(Tutor)) Then Title = Tutor.UserName
+        'If Not (IsNothing(Tutor)) Then Title = Tutor.UserName
         Dim dow() As DayOfWeek = {Day}
         Return New With {.title = Title,
                          .url = RootUrl + "Schedules/Edit/" + Id.ToString(),
@@ -45,24 +43,5 @@ Public Class Schedule
                          .end = EndTime.ToString("hh\:mm"),
                          .dow = dow}
     End Function
-
-End Class
-
-Public Class ScheduleDBContext
-    Inherits DbContext
-
-    Public Sub New()
-        MyBase.New("name=TetherConnection")
-    End Sub
-
-    Protected Overrides Sub OnModelCreating(modelBuilder As DbModelBuilder)
-        modelBuilder.Entity(Of Schedule)().HasRequired(Function(m) m.Tutor).
-            WithMany(Function(t) t.Tutor_Schedules).HasForeignKey(Function(m) m.TutorId).WillCascadeOnDelete(False)
-
-        modelBuilder.Entity(Of Schedule)().HasRequired(Function(m) m.Student).
-            WithMany(Function(t) t.Student_Schedules).HasForeignKey(Function(m) m.StudentId).WillCascadeOnDelete(False)
-    End Sub
-    Public Property Schedules As System.Data.Entity.DbSet(Of Schedule)
-    Public Property AspNetUsers As System.Data.Entity.DbSet(Of AspNetUser)
 
 End Class

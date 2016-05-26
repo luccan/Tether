@@ -12,24 +12,15 @@ End Code
     @<div class="form-horizontal">
         <h4>Schedule</h4>
         <hr />
-        @Html.ValidationSummary(True, "", New With { .class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(Function(model) model.TutorId, "TutorId", htmlAttributes:= New With { .class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("TutorId", CType(ViewBag.TutorList, IEnumerable(Of SelectListItem)),
+         @Html.ValidationSummary(True, "", New With { .class = "text-danger" })
+         <div class="form-group">
+             @Html.LabelFor(Function(model) model.AspNetUserId, "AspNetUserId", htmlAttributes:=New With {.class = "control-label col-md-2"})
+             <div class="col-md-10">
+                 @Html.DropDownList("AspNetUserId", CType(ViewBag.UserList, IEnumerable(Of SelectListItem)),
                                    htmlAttributes:=New With {.class = "form-control"})
-                @Html.ValidationMessageFor(Function(model) model.TutorId, "", New With { .class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(Function(model) model.StudentId, "StudentId", htmlAttributes:= New With { .class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("StudentId", CType(ViewBag.StudentList, IEnumerable(Of SelectListItem)),
-                                   htmlAttributes:=New With {.class = "form-control"})
-                @Html.ValidationMessageFor(Function(model) model.StudentId, "", New With { .class = "text-danger" })
-            </div>
-        </div>
+                 @Html.ValidationMessageFor(Function(model) model.AspNetUserId, "", New With {.class = "text-danger"})
+             </div>
+         </div>
 
          <div class="form-group">
              @Html.LabelFor(Function(model) model.Day, htmlAttributes:=New With {.class = "control-label col-md-2"})

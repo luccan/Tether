@@ -6,7 +6,5 @@ Public Class AspNetUser
 
     Public Property UserName As String
 
-    Public Property Tutor_Schedules As ICollection(Of Schedule)
-
-    Public Property Student_Schedules As ICollection(Of Schedule)
+    Public Property Schedules As ICollection(Of Schedule)
 End Class

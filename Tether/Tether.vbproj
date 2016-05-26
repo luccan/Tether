@@ -196,6 +196,8 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.vb" />
     <Compile Include="Models\AspNetUsers.vb" />
+    <Compile Include="Models\BookingModel.vb" />
+    <Compile Include="Models\TetherDBContext.vb" />
     <Compile Include="Models\IdentityModels.vb" />
     <Compile Include="Models\ManageViewModels.vb" />
     <Compile Include="Models\ScheduleModels.vb" />
@@ -228,6 +230,7 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\cn_component.css" />
     <Content Include="Content\cupertino\images\animated-overlay.gif" />
     <Content Include="Content\cupertino\images\ui-bg_diagonals-thick_90_eeeeee_40x40.png" />
     <Content Include="Content\cupertino\images\ui-bg_flat_15_cd0a0a_40x100.png" />

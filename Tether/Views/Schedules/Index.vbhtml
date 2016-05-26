@@ -1,4 +1,9 @@
-﻿@section css
+﻿@Code
+    ViewData("Title") = "Schedule"
+    Layout = "~/Views/Shared/_Layout.vbhtml"
+End Code
+
+@section css
     @Styles.Render("~/Content/fullcalendar")
     @Styles.RenderFormat("<link href={0} rel='stylesheet' media='print'>", "~/Content/fullcalendarprint")
 End Section

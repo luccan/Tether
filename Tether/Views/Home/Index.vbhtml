@@ -1,6 +1,11 @@
 ﻿@Code
     ViewData("Title") = "Home Page"
+    Layout = "~/Views/Shared/_Layout.vbhtml"
 End Code
+
+@section css
+    @Styles.Render("~/Content/cn_component")
+End Section
 
 <div class="jumbotron">
     <h1>ASP.NET</h1>
@@ -8,24 +13,43 @@ End Code
     <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
+<button class="cn-button" id="cn-button">Menu</button>
+<div class="cn-wrapper" id="cn-wrapper">
+    <ul>
+        <li><a href="#"><span>About</span></a></li>
+        <li><a href="#"><span>Tutorials</span></a></li>
+        <li><a href="#"><span>Articles</span></a></li>
+        <li><a href="#"><span>Snippets</span></a></li>
+        <li><a href="#"><span>Plugins</span></a></li>
+        <li><a href="#"><span>Contact</span></a></li>
+        <li><a href="#"><span>Follow</span></a></li>
+    </ul>
 </div>
+
+@section scripts
+<script>
+    $(document).ready(function () {
+        var button = document.getElementById('cn-button'),
+        wrapper = document.getElementById('cn-wrapper');
+
+        //open and close menu when the button is clicked
+        var open = false;
+        button.addEventListener('click', handler, false);
+
+        function handler() {
+            if (!open) {
+                this.innerHTML = "Close";
+                $(wrapper).addClass('opened-nav');
+            }
+            else {
+                this.innerHTML = "Menu";
+                $(wrapper).removeClass('opened-nav');
+            }
+            open = !open;
+        }
+        function closeWrapper() {
+            $(wrapper).removeClass('opened-nav');
+        }
+    });
+</script>
+End Section
