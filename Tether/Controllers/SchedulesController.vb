@@ -38,7 +38,8 @@ Namespace Controllers
         End Function
 
         ' GET: Schedules/Create
-        Function Create() As ActionResult
+        Function Create(Optional StartTime As String = "",
+                        Optional EndTime As String = "") As ActionResult
             ViewBag.UserList = New SelectList(db.AspNetUsers, "Id", "UserName")
             Return View()
         End Function
@@ -49,6 +50,8 @@ Namespace Controllers
         <HttpPost()>
         <ValidateAntiForgeryToken()>
         Function Create(<Bind(Include:="Id,AspNetUserId,Day,StartTime,EndTime,Status")> ByVal schedule As Schedule) As ActionResult
+            schedule.AspNetUser = db.AspNetUsers.Find(schedule.AspNetUserId)
+            Dim errors = ModelState.Values.SelectMany(Function(v) v.Errors)
             If ModelState.IsValid Then
                 db.Schedules.Add(schedule)
                 db.SaveChanges()

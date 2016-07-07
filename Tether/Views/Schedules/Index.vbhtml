@@ -32,6 +32,21 @@ End Section
             defaultDate: '2016-05-12',
             editable: false, //??
             eventLimit: true, // allow "more" link when too many events
+            dayClick: function(date, jsEvent, view) {
+                //console.log(date);
+                window.location.href = rootUrl + "Schedules/Create?StartTime=" + date.format("HH:mm") + 
+                    "&EndTime=" + date.add(1, 'hours').format("HH:mm");
+
+                //alert('Clicked on: ' + date.format());
+
+                //alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+
+                //alert('Current view: ' + view.name);
+
+                // change the day's background color just for fun
+                // $(this).css('background-color', 'red');
+
+            },
             events: lol
         });
 

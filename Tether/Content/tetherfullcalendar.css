@@ -5,3 +5,7 @@
     font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
     font-size: 14px;
 }
+
+td .fc-time-grid .fc-slats .ui-widget-content:hover {
+    background-color: #2a6496;
+}

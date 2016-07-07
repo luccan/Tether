@@ -8,6 +8,8 @@ Public Class TetherDBContext
     End Sub
 
     Protected Overrides Sub OnModelCreating(modelBuilder As DbModelBuilder)
+        MyBase.OnModelCreating(modelBuilder) 'Do whatever superclass did
+
         modelBuilder.Entity(Of Schedule)().HasRequired(Function(m) m.AspNetUser).
             WithMany(Function(t) t.Schedules).HasForeignKey(Function(m) m.AspNetUserId).WillCascadeOnDelete(False)
 

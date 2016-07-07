@@ -15,7 +15,6 @@ Public Class Schedule
 
     Public Property AspNetUserId As String
 
-    <Required>
     <ForeignKey("AspNetUserId")>
     Public Property AspNetUser As AspNetUser
 
