@@ -7,5 +7,25 @@
 }
 
 td .fc-time-grid .fc-slats .ui-widget-content:hover {
-    background-color: #2a6496;
+    /*background-color: #2a6496;*/
 }
+
+.fc-event {
+    border: 1px solid #7ba6cc;
+    background-color: #aaccff;
+}
+
+.fc-event {
+    border: 1px solid #7ba6cc;
+    background-color: #aaccff;
+}
+
+/*Hover remove white foreground*/
+.fc-event .fc-bg {
+    z-index: 3;
+}
+.fc-event .fc-bg:hover {
+    opacity: 0;
+}
+
+/*Modal form for Adding new Schedule*/

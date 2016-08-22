@@ -1,17 +1,13 @@
 ﻿@ModelType Tether.Schedule
 @Code
-    ViewData("Title") = "Create"
-    Layout = "~/Views/Shared/_Layout.vbhtml"
+    'ViewData("Title") = "Create"
+    'Layout = "~/Views/Shared/_Layout.vbhtml"
 End Code
-
-<h2>Create</h2>
 
 @Using (Html.BeginForm()) 
     @Html.AntiForgeryToken()
     
     @<div class="form-horizontal">
-        <h4>Schedule</h4>
-        <hr />
          @Html.ValidationSummary(True, "", New With { .class = "text-danger" })
          <div class="form-group">
              @Html.LabelFor(Function(model) model.AspNetUserId, "AspNetUserId", htmlAttributes:=New With {.class = "control-label col-md-2"})

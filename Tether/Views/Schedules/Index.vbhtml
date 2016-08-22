@@ -34,8 +34,10 @@ End Section
             eventLimit: true, // allow "more" link when too many events
             dayClick: function(date, jsEvent, view) {
                 //console.log(date);
-                window.location.href = rootUrl + "Schedules/Create?StartTime=" + date.format("HH:mm") + 
-                    "&EndTime=" + date.add(1, 'hours').format("HH:mm");
+                $('#modal-create').modal()
+
+                //window.location.href = rootUrl + "Schedules/Create?StartTime=" + date.format("HH:mm") + 
+                //    "&EndTime=" + date.add(1, 'hours').format("HH:mm");
 
                 //alert('Clicked on: ' + date.format());
 
@@ -56,3 +58,18 @@ End Section
 End Section
 
 <div id='calendar' style='padding-top: 100px'></div>
+
+<div id='modal-create' class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Create Schedule</h4>
+            </div>
+            <div class="modal-body">
+                <!--create modal proper-->
+                @Html.Partial("Create")
+            </div>
+        </div>
+    </div>
+</div>

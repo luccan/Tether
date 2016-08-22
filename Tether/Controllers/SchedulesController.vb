@@ -22,7 +22,25 @@ Namespace Controllers
             Dim schedules = db.Schedules.Where(Function(m) m.AspNetUserId = UserId).ToList()
             Dim js As JavaScriptSerializer = New JavaScriptSerializer()
             ViewBag.schedulesJson = js.Serialize(schedules.Select(Function(s) s.JsonSerializable(Url.Content("~"))))
+            ViewBag.UserList = New SelectList(db.AspNetUsers, "Id", "UserName")
             Return View()
+        End Function
+
+        ' POST: Schedules/Index
+        'To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        'more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        <HttpPost()>
+        <ValidateAntiForgeryToken()>
+        Function Index(<Bind(Include:="Id,AspNetUserId,Day,StartTime,EndTime,Status")> ByVal schedule As Schedule) As ActionResult
+            schedule.AspNetUser = db.AspNetUsers.Find(schedule.AspNetUserId)
+            Dim errors = ModelState.Values.SelectMany(Function(v) v.Errors)
+            If ModelState.IsValid Then
+                db.Schedules.Add(schedule)
+                db.SaveChanges()
+                Return RedirectToAction("Index")
+            End If
+            ViewBag.UserList = New SelectList(db.AspNetUsers, "Id", "UserName", schedule.AspNetUserId)
+            Return View(schedule)
         End Function
 
         ' GET: Schedules/Details/5
