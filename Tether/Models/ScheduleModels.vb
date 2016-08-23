@@ -33,12 +33,16 @@ Public Class Schedule
 
     'Public Property Booking As Booking
 
-    Public Function JsonSerializable(RootUrl As String) As Object
+    Public Function JsonSerializable(RootUrl As String, AllowEdit As Boolean) As Object
         Dim Title = "Free"
         'If Not (IsNothing(Tutor)) Then Title = Tutor.UserName
         Dim dow() As DayOfWeek = {Day}
+        Dim url As String = ""
+        If (AllowEdit) Then
+            url = RootUrl + "Schedules/Edit/" + Id.ToString()
+        End If
         Return New With {.title = Title,
-                         .url = RootUrl + "Schedules/Edit/" + Id.ToString(),
+                         .url = url,
                          .start = StartTime.ToString("hh\:mm"),
                          .end = EndTime.ToString("hh\:mm"),
                          .dow = dow}
@@ -50,6 +54,11 @@ Public Enum ScheduleRequestStatus As Short
     Approved = 0
     PendingTutorApproval = 1
     PendingStudentApproval = 2
+End Enum
+
+Public Enum ScheduleSubject As Short
+    Math = 0
+    English = 1
 End Enum
 
 Public Class ScheduleRequest
@@ -67,7 +76,7 @@ Public Class ScheduleRequest
     Public Property StudentSchedule As Schedule
 
     <Required>
-    Public Property Subject As String
+    Public Property Subject As ScheduleSubject
 
     Public Property Status As ScheduleRequestStatus
 

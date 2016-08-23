@@ -17,11 +17,26 @@ Namespace Controllers
         Private db As New TetherDBContext
 
         ' GET: Schedules
-        Function Index() As ActionResult
+        Function Index(Optional UserName As String = Nothing) As ActionResult
             Dim UserId As String = User.Identity.GetUserId()
-            Dim schedules = db.Schedules.Where(Function(m) m.AspNetUserId = UserId).ToList()
+            Dim ViewedUserId As String = UserId
+            If (UserName Is Nothing) Then
+                UserName = User.Identity.Name
+            Else
+                Dim ViewedUser = db.AspNetUsers.Where(Function(m) m.UserName = UserName)
+                If (ViewedUser.Count() > 0) Then
+                    ViewedUserId = ViewedUser.First().Id
+                Else
+                    'User Not Found
+                    Return RedirectToAction("Index")
+                End If
+            End If
+            Dim schedules = db.Schedules.Where(Function(m) m.AspNetUserId = ViewedUserId).ToList()
             Dim js As JavaScriptSerializer = New JavaScriptSerializer()
-            ViewBag.schedulesJson = js.Serialize(schedules.Select(Function(s) s.JsonSerializable(Url.Content("~"))))
+            Dim MyProfile As Boolean = (ViewedUserId = UserId)
+            ViewBag.schedulesJson = js.Serialize(schedules.Select(Function(s) s.JsonSerializable(Url.Content("~"), MyProfile)))
+            ViewBag.ViewedUserName = UserName
+            ViewBag.MyProfile = MyProfile 'boolean
             'ViewBag.UserList = New SelectList(db.AspNetUsers, "Id", "UserName")
             Return View()
         End Function
@@ -43,7 +58,7 @@ Namespace Controllers
             'Fail and redirect (with errors)
             Dim schedules = db.Schedules.Where(Function(m) m.AspNetUserId = UserId).ToList()
             Dim js As JavaScriptSerializer = New JavaScriptSerializer()
-            ViewBag.schedulesJson = js.Serialize(schedules.Select(Function(s) s.JsonSerializable(Url.Content("~"))))
+            ViewBag.schedulesJson = js.Serialize(schedules.Select(Function(s) s.JsonSerializable(Url.Content("~"), True)))
             ViewBag.errors = errors.ToList()
             Return View(schedule)
         End Function

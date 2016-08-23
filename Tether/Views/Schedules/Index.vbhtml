@@ -33,6 +33,10 @@ End Section
             editable: false, //??
             eventLimit: true, // allow "more" link when too many events
             dayClick: function(date, jsEvent, view) {
+                if ("@(ViewBag.MyProfile)" != "True"){
+                    //create request
+                    return;
+                }
                 //console.log(date);
                 $('#modal-create').modal()
                 $('#StartTime').val(date.format("HH:mm"));
@@ -55,12 +59,22 @@ End Section
             events: lol
         });
 
-        $("#btn-create").click(function(event){
-            $('#modal-create').modal()
-            $('#StartTime').val("");
-            $('#EndTime').val("");
-            $('#Day').val(moment().format("e"));
-        });
+        if ("@(ViewBag.MyProfile)" == "True"){
+            $("#btn-create").click(function(event){
+                $('#modal-create').modal()
+                $('#StartTime').val("");
+                $('#EndTime').val("");
+                $('#Day').val(moment().format("e"));
+            });
+        } else {
+            $("#btn-create-request").click(function(event){
+                return;
+                $('#modal-create-request').modal()
+                $('#StartTime').val("");
+                $('#EndTime').val("");
+                $('#Day').val(moment().format("e"));
+            });
+        }
 
     });
 
@@ -71,9 +85,14 @@ End Section
 End If
 End Section
 
-<h2>Schedules</h2>
+<h2>@ViewBag.ViewedUserName</h2>
+<h4>Schedule</h4>
 
-<a href="#" id="btn-create" class="btn btn-primary btn-success">New&nbsp <span class="glyphicon glyphicon-plus-sign"></span></a>
+@If (ViewBag.MyProfile) Then
+    @<a href="#" id="btn-create" class="btn btn-primary btn-success">New Schedule&nbsp <span class="glyphicon glyphicon-plus-sign"></span></a>
+Else
+    @<a href="#" id="btn-create-request" class="btn btn-primary btn-success">New Request&nbsp <span class="glyphicon glyphicon-plus-sign"></span></a>
+End If
 
 <div id='calendar'></div>
 
@@ -87,6 +106,21 @@ End Section
             <div class="modal-body">
                 <!--create modal proper-->
                 @Html.Partial("Create")
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id='modal-create-request' class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Create Request</h4>
+            </div>
+            <div class="modal-body">
+                <!--create request modal proper-->
+                @Html.Partial("CreateRequest")
             </div>
         </div>
     </div>
