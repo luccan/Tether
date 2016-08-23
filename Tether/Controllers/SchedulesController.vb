@@ -22,7 +22,7 @@ Namespace Controllers
             Dim schedules = db.Schedules.Where(Function(m) m.AspNetUserId = UserId).ToList()
             Dim js As JavaScriptSerializer = New JavaScriptSerializer()
             ViewBag.schedulesJson = js.Serialize(schedules.Select(Function(s) s.JsonSerializable(Url.Content("~"))))
-            ViewBag.UserList = New SelectList(db.AspNetUsers, "Id", "UserName")
+            'ViewBag.UserList = New SelectList(db.AspNetUsers, "Id", "UserName")
             Return View()
         End Function
 
@@ -32,14 +32,19 @@ Namespace Controllers
         <HttpPost()>
         <ValidateAntiForgeryToken()>
         Function Index(<Bind(Include:="Id,AspNetUserId,Day,StartTime,EndTime,Status")> ByVal schedule As Schedule) As ActionResult
-            schedule.AspNetUser = db.AspNetUsers.Find(schedule.AspNetUserId)
+            Dim UserId As String = User.Identity.GetUserId()
+            schedule.AspNetUser = db.AspNetUsers.Find(UserId)
             Dim errors = ModelState.Values.SelectMany(Function(v) v.Errors)
             If ModelState.IsValid Then
                 db.Schedules.Add(schedule)
                 db.SaveChanges()
                 Return RedirectToAction("Index")
             End If
-            ViewBag.UserList = New SelectList(db.AspNetUsers, "Id", "UserName", schedule.AspNetUserId)
+            'Fail and redirect (with errors)
+            Dim schedules = db.Schedules.Where(Function(m) m.AspNetUserId = UserId).ToList()
+            Dim js As JavaScriptSerializer = New JavaScriptSerializer()
+            ViewBag.schedulesJson = js.Serialize(schedules.Select(Function(s) s.JsonSerializable(Url.Content("~"))))
+            ViewBag.errors = errors.ToList()
             Return View(schedule)
         End Function
 

@@ -35,8 +35,11 @@ End Section
             dayClick: function(date, jsEvent, view) {
                 //console.log(date);
                 $('#modal-create').modal()
+                $('#StartTime').val(date.format("HH:mm"));
+                $('#EndTime').val(date.add(1, 'hours').format("HH:mm"));
+                $('#Day').val(date.format("e"));
 
-                //window.location.href = rootUrl + "Schedules/Create?StartTime=" + date.format("HH:mm") + 
+                //window.location.href = rootUrl + "Schedules/Create?StartTime=" + date.format("HH:mm") +
                 //    "&EndTime=" + date.add(1, 'hours').format("HH:mm");
 
                 //alert('Clicked on: ' + date.format());
@@ -52,12 +55,27 @@ End Section
             events: lol
         });
 
+        $("#btn-create").click(function(event){
+            $('#modal-create').modal()
+            $('#StartTime').val("");
+            $('#EndTime').val("");
+            $('#Day').val(moment().format("e"));
+        });
+
     });
 
 </script>
+
+@If (ViewBag.errors IsNot Nothing) Then
+    @<script>$('#modal-create').modal();</script>
+End If
 End Section
 
-<div id='calendar' style='padding-top: 100px'></div>
+<h2>Schedules</h2>
+
+<a href="#" id="btn-create" class="btn btn-primary btn-success">New&nbsp <span class="glyphicon glyphicon-plus-sign"></span></a>
+
+<div id='calendar'></div>
 
 <div id='modal-create' class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">

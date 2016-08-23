@@ -7,6 +7,7 @@ Imports System.Runtime.Serialization
 Public Enum ScheduleStatus As Integer
     Free = 0
     Taken = 1
+    Draft = 2
 End Enum
 
 Public Class Schedule
@@ -42,5 +43,39 @@ Public Class Schedule
                          .end = EndTime.ToString("hh\:mm"),
                          .dow = dow}
     End Function
+
+End Class
+
+Public Enum ScheduleRequestStatus As Short
+    Approved = 0
+    PendingTutorApproval = 1
+    PendingStudentApproval = 2
+End Enum
+
+Public Class ScheduleRequest
+    <Key>
+    Public Property Id As Long
+
+    Public Property TutorScheduleId As String
+
+    <ForeignKey("TutorScheduleId")>
+    Public Property TutorSchedule As Schedule
+
+    Public Property StudentScheduleId As String
+
+    <ForeignKey("StudentScheduleId")>
+    Public Property StudentSchedule As Schedule
+
+    <Required>
+    Public Property Subject As String
+
+    Public Property Status As ScheduleRequestStatus
+
+    Public Property Message As String
+
+    Public Property ParentScheduleRequestId As String
+
+    <ForeignKey("ParentScheduleRequestId")>
+    Public Property ParentScheduleRequest As ScheduleRequest
 
 End Class
