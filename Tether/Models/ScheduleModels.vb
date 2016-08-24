@@ -17,7 +17,7 @@ Public Class Schedule
     Public Property AspNetUserId As String
 
     <ForeignKey("AspNetUserId")>
-    Public Property AspNetUser As AspNetUser
+    Public Overridable Property AspNetUser As AspNetUser
 
     <Required>
     Public Property Day As DayOfWeek
@@ -68,12 +68,12 @@ Public Class ScheduleRequest
     Public Property TutorAspNetUserId As String
 
     <ForeignKey("TutorAspNetUserId")>
-    Public Property Tutor As AspNetUser
+    Public Overridable Property Tutor As AspNetUser
 
     Public Property StudentAspNetUserId As String
 
     <ForeignKey("StudentAspNetUserId")>
-    Public Property Student As AspNetUser
+    Public Overridable Property Student As AspNetUser
 
     <Required>
     Public Property Day As DayOfWeek
@@ -97,7 +97,7 @@ Public Class ScheduleRequest
     Public Property ParentScheduleRequestId As Long
 
     <ForeignKey("ParentScheduleRequestId")>
-    Public Property ParentScheduleRequest As ScheduleRequest
+    Public Overridable Property ParentScheduleRequest As ScheduleRequest
 
     Public Function JsonSerializable(RootUrl As String, AllowEdit As Boolean) As Object
         Dim Title = Subject

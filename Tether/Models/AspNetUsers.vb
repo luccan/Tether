@@ -16,5 +16,5 @@ Public Class AspNetUser
 
     Public Property UserType As AspNetUserType
 
-    Public Property Schedules As ICollection(Of Schedule)
+    Public Overridable Property Schedules As ICollection(Of Schedule)
 End Class

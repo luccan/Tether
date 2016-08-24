@@ -18,7 +18,34 @@ Namespace Controllers
 
         ' GET: Requests
         Function Index() As ActionResult
-            Return View()
+            Dim UserId As String = User.Identity.GetUserId()
+            Dim Model = db.ScheduleRequests.Where(Function(m) m.TutorAspNetUserId = UserId)
+            If (db.AspNetUsers.Find(UserId).UserType = AspNetUserType.Student) Then
+                Model = db.ScheduleRequests.Where(Function(m) m.StudentAspNetUserId = UserId)
+                Model = Model.Where(Function(m) m.Status = ScheduleRequestStatus.PendingStudentApproval)
+            Else
+                Model = Model.Where(Function(m) m.Status = ScheduleRequestStatus.PendingTutorApproval)
+            End If
+            ViewBag.UserType = db.AspNetUsers.Find(UserId).UserType
+            Return View(Model.ToList())
+        End Function
+
+        Function Pending() As ActionResult
+            Dim UserId As String = User.Identity.GetUserId()
+            Dim Model = db.ScheduleRequests.Where(Function(m) m.TutorAspNetUserId = UserId)
+
+            Dim Model2 = db.ScheduleRequests.ToList()
+            Dim Model3 = db.Schedules.ToList()
+            Dim Model4 = db.AspNetUsers.ToList()
+
+            If (db.AspNetUsers.Find(UserId).UserType = AspNetUserType.Student) Then
+                Model = db.ScheduleRequests.Where(Function(m) m.StudentAspNetUserId = UserId)
+                Model = Model.Where(Function(m) m.Status = ScheduleRequestStatus.PendingTutorApproval)
+            Else
+                Model = Model.Where(Function(m) m.Status = ScheduleRequestStatus.PendingStudentApproval)
+            End If
+            ViewBag.UserType = db.AspNetUsers.Find(UserId).UserType
+            Return View(Model.ToList())
         End Function
 
         ' GET: Schedules/Create
