@@ -113,7 +113,7 @@ ElseIf (ViewBag.AllowRequest) Then
                 </div>
                 <div class="modal-body">
                     <!--create modal request proper-->
-                    @Html.Action("CreateRequest", New With {.ViewedUserName = ViewBag.ViewedUserName})
+                    @Html.Action("Create", "Requests", New With {.ViewedUserName = ViewBag.ViewedUserName})
                 </div>
             </div>
         </div>
