@@ -38,7 +38,7 @@ End Section
                     return;
                 }
                 //console.log(date);
-                $('#modal-create').modal()
+                $('#modal-create').modal();
                 $('#StartTime').val(date.format("HH:mm"));
                 $('#EndTime').val(date.add(1, 'hours').format("HH:mm"));
                 $('#Day').val(date.format("e"));
@@ -61,7 +61,7 @@ End Section
 
         if ("@(ViewBag.MyProfile)" == "True"){
             $("#btn-create").click(function(event){
-                $('#modal-create').modal()
+                $('#modal-create').modal();
                 $('#StartTime').val("");
                 $('#EndTime').val("");
                 $('#Day').val(moment().format("e"));
@@ -69,7 +69,7 @@ End Section
         } else {
             $("#btn-create-request").click(function(event){
                 return;
-                $('#modal-create-request').modal()
+                $('#modal-create-request').modal();
                 $('#StartTime').val("");
                 $('#EndTime').val("");
                 $('#Day').val(moment().format("e"));
@@ -106,7 +106,7 @@ End If
         </div>
     </div>
 </div>
-<!--
+
 <div id='modal-create-request' class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -115,9 +115,9 @@ End If
                 <h4 class="modal-title" id="myModalLabel">Create Request</h4>
             </div>
             <div class="modal-body">
-                Html.Partial("CreateRequest")
+                <!--create modal request proper-->
+                @Html.Action("CreateRequest")
             </div>
         </div>
     </div>
 </div>
--->

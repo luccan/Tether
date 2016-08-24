@@ -22,6 +22,7 @@ Public Class TetherDBContext
         '    WithRequiredDependent(Function(t) t.Booking).WillCascadeOnDelete(False)
     End Sub
     Public Property Schedules As System.Data.Entity.DbSet(Of Schedule)
+    Public Property ScheduleRequests As System.Data.Entity.DbSet(Of ScheduleRequest)
     Public Property AspNetUsers As System.Data.Entity.DbSet(Of AspNetUser)
 
 End Class

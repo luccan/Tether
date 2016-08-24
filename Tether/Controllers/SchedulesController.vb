@@ -55,7 +55,6 @@ Namespace Controllers
         ' GET: Schedules/Create
         Function Create(Optional StartTime As String = "",
                         Optional EndTime As String = "") As ActionResult
-            ViewBag.UserList = New SelectList(db.AspNetUsers, "Id", "UserName")
             Return View()
         End Function
 
@@ -64,7 +63,7 @@ Namespace Controllers
         'more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         <HttpPost()>
         <ValidateAntiForgeryToken()>
-        Function Create(<Bind(Include:="Id,AspNetUserId,Day,StartTime,EndTime,Status")> ByVal schedule As Schedule) As ActionResult
+        Function Create(<Bind(Include:="Id,Day,StartTime,EndTime,Status")> ByVal schedule As Schedule) As ActionResult
             Dim UserId As String = User.Identity.GetUserId()
             schedule.AspNetUser = db.AspNetUsers.Find(UserId)
             Dim errors = ModelState.Values.SelectMany(Function(v) v.Errors)
@@ -76,6 +75,40 @@ Namespace Controllers
             End If
             ViewBag.errors = errors.ToList()
             Return PartialView(schedule)
+        End Function
+
+        ' GET: Schedules/CreateRequest
+        Function CreateRequest(Optional StartTime As String = "",
+                        Optional EndTime As String = "") As ActionResult
+            ViewBag.TutorAspNetUserId = "ecfff954-a9e9-48dc-bd93-32f07fe791fc"
+            Return View()
+        End Function
+
+        ' POST: Schedules/CreateRequest
+        'To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        'more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        <HttpPost()>
+        <ValidateAntiForgeryToken()>
+        Function CreateRequest(<Bind(Include:="Id,StudentAspNetUserId,TutorAspNetUserId,Day,StartTime,EndTime,Subject,Rate,Message,ParentRequestId")> ByVal request As ScheduleRequest) As ActionResult
+            If (request.ParentScheduleRequestId <= 0) Then
+                request.ParentScheduleRequestId = -1
+            End If
+            Dim UserId As String = User.Identity.GetUserId()
+            Dim _User = db.AspNetUsers.Find(UserId)
+            If (_User.UserType = AspNetUserType.Student) Then
+                request.Student = _User
+            Else
+                request.Tutor = _User
+            End If
+            Dim errors = ModelState.Values.SelectMany(Function(v) v.Errors)
+            If ModelState.IsValid Then
+                db.ScheduleRequests.Add(request)
+                db.SaveChanges()
+                ViewBag.refresh = True
+                Return PartialView(request)
+            End If
+            ViewBag.errors = errors.ToList()
+            Return PartialView(request)
         End Function
 
         ' GET: Schedules/Edit/5
