@@ -294,6 +294,7 @@
     <Content Include="Views\Schedules\Details.vbhtml" />
     <Content Include="Views\Schedules\Edit.vbhtml" />
     <Content Include="Views\Schedules\Index.vbhtml" />
+    <Content Include="Views\Schedules\CreateRequest.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

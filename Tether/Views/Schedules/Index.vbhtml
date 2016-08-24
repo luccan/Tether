@@ -79,10 +79,6 @@ End Section
     });
 
 </script>
-
-@If (ViewBag.errors IsNot Nothing) Then
-    @<script>$('#modal-create').modal();</script>
-End If
 End Section
 
 <h2>@ViewBag.ViewedUserName</h2>
@@ -105,12 +101,12 @@ End If
             </div>
             <div class="modal-body">
                 <!--create modal proper-->
-                @Html.Partial("Create")
+                @Html.Action("Create")
             </div>
         </div>
     </div>
 </div>
-
+<!--
 <div id='modal-create-request' class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -119,9 +115,9 @@ End If
                 <h4 class="modal-title" id="myModalLabel">Create Request</h4>
             </div>
             <div class="modal-body">
-                <!--create request modal proper-->
-                @Html.Partial("CreateRequest")
+                Html.Partial("CreateRequest")
             </div>
         </div>
     </div>
 </div>
+-->
