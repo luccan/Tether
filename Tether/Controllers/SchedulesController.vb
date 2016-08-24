@@ -20,12 +20,15 @@ Namespace Controllers
         Function Index(Optional UserName As String = Nothing) As ActionResult
             Dim UserId As String = User.Identity.GetUserId()
             Dim ViewedUserId As String = UserId
+            Dim _User As AspNetUser = db.AspNetUsers.Find(UserId)
+            Dim ViewedUser As AspNetUser = _User
             If (UserName Is Nothing) Then
                 UserName = User.Identity.Name
             Else
-                Dim ViewedUser = db.AspNetUsers.Where(Function(m) m.UserName = UserName)
-                If (ViewedUser.Count() > 0) Then
-                    ViewedUserId = ViewedUser.First().Id
+                Dim ViewedUsers = db.AspNetUsers.Where(Function(m) m.UserName = UserName)
+                If (ViewedUsers.Count() > 0) Then
+                    ViewedUser = ViewedUsers.First()
+                    ViewedUserId = ViewedUser.Id
                 Else
                     'User Not Found
                     Return RedirectToAction("Index")
@@ -37,6 +40,7 @@ Namespace Controllers
             ViewBag.schedulesJson = js.Serialize(schedules.Select(Function(s) s.JsonSerializable(Url.Content("~"), MyProfile)))
             ViewBag.ViewedUserName = UserName
             ViewBag.MyProfile = MyProfile 'boolean
+            ViewBag.AllowRequest = (_User.UserType = AspNetUserType.Student) <> (ViewedUser.UserType = AspNetUserType.Student)
             Return View()
         End Function
 

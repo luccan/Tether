@@ -17,10 +17,10 @@ End Section
     $(document).ready(function () {
 
         //determining modal name
-        var target_modal_name = "#modal-create";
+        var target_modal_name = "";
         if ("@(ViewBag.MyProfile)" == "True"){
             target_modal_name = "#modal-create";
-        } else {
+        } else if ("@(ViewBag.AllowRequest)" == "True") {
             target_modal_name = "#modal-create-request";
         }
 
@@ -41,6 +41,7 @@ End Section
             editable: false, //??
             eventLimit: true, // allow "more" link when too many events
             dayClick: function(date, jsEvent, view) {
+                if (target_modal_name==""){return;}
                 //console.log(date);
                 $(target_modal_name).modal();
                 $(target_modal_name).find('#StartTime').val(date.format("HH:mm"));
@@ -64,6 +65,7 @@ End Section
         });
 
         $("#btn-create").click(function(event){
+            if (target_modal_name==""){return;}
             $(target_modal_name).modal();
             $(target_modal_name).find('#StartTime').val("");
             $(target_modal_name).find('#EndTime').val("");
@@ -80,7 +82,7 @@ End Section
 
 @If (ViewBag.MyProfile) Then
     @<a href="javascript:" id="btn-create" class="btn btn-primary btn-success">New Schedule&nbsp <span class="glyphicon glyphicon-plus-sign"></span></a>
-Else
+ElseIf (ViewBag.AllowRequest) Then
     @<a href="javascript:" id="btn-create" class="btn btn-primary btn-success">New Request&nbsp <span class="glyphicon glyphicon-plus-sign"></span></a>
 End If
 
@@ -101,7 +103,7 @@ End If
             </div>
         </div>
     </div>
-Else
+ElseIf (ViewBag.AllowRequest) Then
     @<div id='modal-create-request' class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
