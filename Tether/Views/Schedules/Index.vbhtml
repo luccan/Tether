@@ -16,6 +16,14 @@ End Section
 
     $(document).ready(function () {
 
+        //determining modal name
+        var target_modal_name = "#modal-create";
+        if ("@(ViewBag.MyProfile)" == "True"){
+            target_modal_name = "#modal-create";
+        } else {
+            target_modal_name = "#modal-create-request";
+        }
+
         $('#calendar').fullCalendar({
             theme: true,
             header: {
@@ -33,15 +41,11 @@ End Section
             editable: false, //??
             eventLimit: true, // allow "more" link when too many events
             dayClick: function(date, jsEvent, view) {
-                if ("@(ViewBag.MyProfile)" != "True"){
-                    //create request
-                    return;
-                }
                 //console.log(date);
-                $('#modal-create').modal();
-                $('#StartTime').val(date.format("HH:mm"));
-                $('#EndTime').val(date.add(1, 'hours').format("HH:mm"));
-                $('#Day').val(date.format("e"));
+                $(target_modal_name).modal();
+                $(target_modal_name).find('#StartTime').val(date.format("HH:mm"));
+                $(target_modal_name).find('#EndTime').val(date.add(1, 'hours').format("HH:mm"));
+                $(target_modal_name).find('#Day').val(date.format("e"));
 
                 //window.location.href = rootUrl + "Schedules/Create?StartTime=" + date.format("HH:mm") +
                 //    "&EndTime=" + date.add(1, 'hours').format("HH:mm");
@@ -59,22 +63,12 @@ End Section
             events: lol
         });
 
-        if ("@(ViewBag.MyProfile)" == "True"){
-            $("#btn-create").click(function(event){
-                $('#modal-create').modal();
-                $('#StartTime').val("");
-                $('#EndTime').val("");
-                $('#Day').val(moment().format("e"));
-            });
-        } else {
-            $("#btn-create-request").click(function(event){
-                return;
-                $('#modal-create-request').modal();
-                $('#StartTime').val("");
-                $('#EndTime').val("");
-                $('#Day').val(moment().format("e"));
-            });
-        }
+        $("#btn-create").click(function(event){
+            $(target_modal_name).modal();
+            $(target_modal_name).find('#StartTime').val("");
+            $(target_modal_name).find('#EndTime').val("");
+            $(target_modal_name).find('#Day').val(moment().format("e"));
+        });
 
     });
 
@@ -85,39 +79,41 @@ End Section
 <h4>Schedule</h4>
 
 @If (ViewBag.MyProfile) Then
-    @<a href="#" id="btn-create" class="btn btn-primary btn-success">New Schedule&nbsp <span class="glyphicon glyphicon-plus-sign"></span></a>
+    @<a href="javascript:" id="btn-create" class="btn btn-primary btn-success">New Schedule&nbsp <span class="glyphicon glyphicon-plus-sign"></span></a>
 Else
-    @<a href="#" id="btn-create-request" class="btn btn-primary btn-success">New Request&nbsp <span class="glyphicon glyphicon-plus-sign"></span></a>
+    @<a href="javascript:" id="btn-create" class="btn btn-primary btn-success">New Request&nbsp <span class="glyphicon glyphicon-plus-sign"></span></a>
 End If
 
 <div id='calendar'></div>
 
-<div id='modal-create' class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Create Schedule</h4>
-            </div>
-            <div class="modal-body">
-                <!--create modal proper-->
-                @Html.Action("Create")
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id='modal-create-request' class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Create Request</h4>
-            </div>
-            <div class="modal-body">
-                <!--create modal request proper-->
-                @Html.Action("CreateRequest")
+@If (ViewBag.MyProfile) Then
+    @<div id='modal-create' class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Create Schedule</h4>
+                </div>
+                <div class="modal-body">
+                    <!--create modal proper-->
+                    @Html.Action("Create")
+                </div>
             </div>
         </div>
     </div>
-</div>
+Else
+    @<div id='modal-create-request' class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Create Request</h4>
+                </div>
+                <div class="modal-body">
+                    <!--create modal request proper-->
+                    @Html.Action("CreateRequest", New With {.ViewedUserName = ViewBag.ViewedUserName})
+                </div>
+            </div>
+        </div>
+    </div>
+End If

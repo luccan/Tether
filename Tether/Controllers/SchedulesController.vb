@@ -78,9 +78,18 @@ Namespace Controllers
         End Function
 
         ' GET: Schedules/CreateRequest
-        Function CreateRequest(Optional StartTime As String = "",
-                        Optional EndTime As String = "") As ActionResult
-            ViewBag.TutorAspNetUserId = "ecfff954-a9e9-48dc-bd93-32f07fe791fc"
+        Function CreateRequest(Optional ViewedUserName As String = Nothing) As ActionResult
+            Dim ViewedUser = db.AspNetUsers.Where(Function(m) m.UserName = ViewedUserName)
+            If (ViewedUser.Count() > 0) Then
+                If (ViewedUser.First().UserType = AspNetUserType.Student) Then
+                    ViewBag.StudentAspNetUserId = ViewedUser.First().Id
+                Else
+                    ViewBag.TutorAspNetUserId = ViewedUser.First().Id
+                End If
+            Else
+                'User Not Found
+                Return RedirectToAction("Index")
+            End If
             Return View()
         End Function
 
@@ -97,8 +106,10 @@ Namespace Controllers
             Dim _User = db.AspNetUsers.Find(UserId)
             If (_User.UserType = AspNetUserType.Student) Then
                 request.Student = _User
+                ViewBag.TutorAspNetUserId = request.TutorAspNetUserId
             Else
                 request.Tutor = _User
+                ViewBag.StudentAspNetUserId = request.StudentAspNetUserId
             End If
             Dim errors = ModelState.Values.SelectMany(Function(v) v.Errors)
             If ModelState.IsValid Then
