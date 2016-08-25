@@ -8,6 +8,7 @@
 'Imports System.Web.Mvc
 'Imports Tether
 Imports Microsoft.AspNet.Identity
+
 'Imports System.Web.Script.Serialization
 
 Namespace Controllers
@@ -77,9 +78,11 @@ Namespace Controllers
             Dim _User = db.AspNetUsers.Find(UserId)
             If (_User.UserType = AspNetUserType.Student) Then
                 request.Student = _User
+                request.Status = ScheduleRequestStatus.PendingTutorApproval
                 ViewBag.TutorAspNetUserId = request.TutorAspNetUserId
             Else
                 request.Tutor = _User
+                request.Status = ScheduleRequestStatus.PendingStudentApproval
                 ViewBag.StudentAspNetUserId = request.StudentAspNetUserId
             End If
             Dim errors = ModelState.Values.SelectMany(Function(v) v.Errors)
@@ -92,5 +95,54 @@ Namespace Controllers
             ViewBag.errors = errors.ToList()
             Return PartialView(request)
         End Function
+
+        ' POST: Requests/DeleteRequest/5
+        <HttpPost()>
+        <ValidateAntiForgeryToken()>
+        Function DeleteRequest(ByVal id As Long) As ActionResult
+            Dim authorized As Boolean = False
+            Dim request As ScheduleRequest = db.ScheduleRequests.Find(id)
+            If (request.Status = ScheduleRequestStatus.PendingStudentApproval) Then
+                If (request.Tutor.Id = User.Identity.GetUserId()) Then
+                    authorized = True
+                End If
+            ElseIf (request.Status = ScheduleRequestStatus.PendingTutorApproval) Then
+                If (request.Student.Id = User.Identity.GetUserId()) Then
+                    authorized = True
+                End If
+            End If
+            If (authorized) Then
+                db.ScheduleRequests.Remove(request)
+                db.SaveChanges()
+                Return Redirect(ControllerContext.HttpContext.Request.UrlReferrer.ToString())
+            End If
+            'throw error here?
+            Return Redirect(ControllerContext.HttpContext.Request.UrlReferrer.ToString())
+        End Function
+
+        ' POST: Requests/RejectRequest/5
+        <HttpPost()>
+        <ValidateAntiForgeryToken()>
+        Function RejectRequest(ByVal id As Long) As ActionResult
+            Dim authorized As Boolean = False
+            Dim request As ScheduleRequest = db.ScheduleRequests.Find(id)
+            If (request.Status = ScheduleRequestStatus.PendingStudentApproval) Then
+                If (request.Student.Id = User.Identity.GetUserId()) Then
+                    authorized = True
+                End If
+            ElseIf (request.Status = ScheduleRequestStatus.PendingTutorApproval) Then
+                If (request.Tutor.Id = User.Identity.GetUserId()) Then
+                    authorized = True
+                End If
+            End If
+            If (authorized) Then
+                request.Status = ScheduleRequestStatus.Rejected
+                db.SaveChanges()
+                Return Redirect(ControllerContext.HttpContext.Request.UrlReferrer.ToString())
+            End If
+            'throw error here?
+            Return Redirect(ControllerContext.HttpContext.Request.UrlReferrer.ToString())
+        End Function
+
     End Class
 End Namespace

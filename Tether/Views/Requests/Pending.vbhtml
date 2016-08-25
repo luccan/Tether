@@ -22,7 +22,12 @@ End Code
                         <a href="#" class="btn btn-primary">Message</a> <a href="#" class="btn btn-default">View Profile</a>
                     </p>
                     <p>
-                        <a href="#" class="btn btn-primary btn-danger">Delete <span class="glyphicon glyphicon-remove"></span></a>
+                    @Using (Html.BeginForm("DeleteRequest", "Requests", New With {.id = m.Id}))
+                        @Html.AntiForgeryToken()
+                        @<button type="submit" class="btn btn-primary btn-danger">
+                            Delete <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                    End Using
                     </p>
                 </div>
             </div>
