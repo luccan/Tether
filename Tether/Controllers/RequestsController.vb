@@ -34,16 +34,24 @@ Namespace Controllers
         Function Pending() As ActionResult
             Dim UserId As String = User.Identity.GetUserId()
             Dim Model = db.ScheduleRequests.Where(Function(m) m.TutorAspNetUserId = UserId)
-
-            Dim Model2 = db.ScheduleRequests.ToList()
-            Dim Model3 = db.Schedules.ToList()
-            Dim Model4 = db.AspNetUsers.ToList()
-
             If (db.AspNetUsers.Find(UserId).UserType = AspNetUserType.Student) Then
                 Model = db.ScheduleRequests.Where(Function(m) m.StudentAspNetUserId = UserId)
                 Model = Model.Where(Function(m) m.Status = ScheduleRequestStatus.PendingTutorApproval)
             Else
                 Model = Model.Where(Function(m) m.Status = ScheduleRequestStatus.PendingStudentApproval)
+            End If
+            ViewBag.UserType = db.AspNetUsers.Find(UserId).UserType
+            Return View(Model.ToList())
+        End Function
+
+        Function Rejected() As ActionResult
+            Dim UserId As String = User.Identity.GetUserId()
+            Dim Model = db.ScheduleRequests.Where(Function(m) m.TutorAspNetUserId = UserId)
+            If (db.AspNetUsers.Find(UserId).UserType = AspNetUserType.Student) Then
+                Model = db.ScheduleRequests.Where(Function(m) m.StudentAspNetUserId = UserId)
+                Model = Model.Where(Function(m) m.Status = ScheduleRequestStatus.RejectedByTutor)
+            Else
+                Model = Model.Where(Function(m) m.Status = ScheduleRequestStatus.RejectedByStudent)
             End If
             ViewBag.UserType = db.AspNetUsers.Find(UserId).UserType
             Return View(Model.ToList())
@@ -102,11 +110,11 @@ Namespace Controllers
         Function DeleteRequest(ByVal id As Long) As ActionResult
             Dim authorized As Boolean = False
             Dim request As ScheduleRequest = db.ScheduleRequests.Find(id)
-            If (request.Status = ScheduleRequestStatus.PendingStudentApproval) Then
+            If (request.Status = ScheduleRequestStatus.PendingStudentApproval Or request.Status = ScheduleRequestStatus.RejectedByStudent) Then
                 If (request.Tutor.Id = User.Identity.GetUserId()) Then
                     authorized = True
                 End If
-            ElseIf (request.Status = ScheduleRequestStatus.PendingTutorApproval) Then
+            ElseIf (request.Status = ScheduleRequestStatus.PendingTutorApproval Or request.Status = ScheduleRequestStatus.RejectedByTutor) Then
                 If (request.Student.Id = User.Identity.GetUserId()) Then
                     authorized = True
                 End If
@@ -129,14 +137,15 @@ Namespace Controllers
             If (request.Status = ScheduleRequestStatus.PendingStudentApproval) Then
                 If (request.Student.Id = User.Identity.GetUserId()) Then
                     authorized = True
+                    request.Status = ScheduleRequestStatus.RejectedByStudent
                 End If
             ElseIf (request.Status = ScheduleRequestStatus.PendingTutorApproval) Then
                 If (request.Tutor.Id = User.Identity.GetUserId()) Then
                     authorized = True
+                    request.Status = ScheduleRequestStatus.RejectedByTutor
                 End If
             End If
             If (authorized) Then
-                request.Status = ScheduleRequestStatus.Rejected
                 db.SaveChanges()
                 Return Redirect(ControllerContext.HttpContext.Request.UrlReferrer.ToString())
             End If

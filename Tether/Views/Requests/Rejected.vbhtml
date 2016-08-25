@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.vbhtml"
 End Code
 
-<h2>Your Pending Requests</h2>
+<h2>Rejected Requests</h2>
 
 <div class="row text-center">
     @For Each m In Model
@@ -19,7 +19,7 @@ End Code
                     <p>$@m.Rate/hr</p>
                     <p>@m.Message</p>
                     <p>
-                        <a href="#" class="btn btn-primary">Message</a> <a href="#" class="btn btn-default">View Profile</a>
+                        <a href="#" class="btn btn-default">View Profile</a>
                     </p>
                     <p>
                     @Using (Html.BeginForm("DeleteRequest", "Requests", New With {.id = m.Id}))

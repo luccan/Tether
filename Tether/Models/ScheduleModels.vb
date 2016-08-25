@@ -54,7 +54,8 @@ Public Enum ScheduleRequestStatus As Short
     Approved = 0
     PendingTutorApproval = 1
     PendingStudentApproval = 2
-    Rejected = 3
+    RejectedByTutor = 3
+    RejectedByStudent = 4
 End Enum
 
 Public Enum ScheduleSubject As Short

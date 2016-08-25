@@ -28,6 +28,15 @@
                 <ul class="nav navbar-nav">
                     @If (User.Identity.IsAuthenticated) Then
                         @<li>@Html.ActionLink("Schedule", "Index", "Schedules")</li>
+                        @<li class="dropdown">
+                            <a href="javascript:" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Requests <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink("Requests", "Index", "Requests")</li>
+                                    <li>@Html.ActionLink("Your Pending Requests", "Pending", "Requests")</li>
+                                    <li role="separator" class="divider"></li>
+                                    <li>@Html.ActionLink("Rejected Requests", "Rejected", "Requests")</li>
+                                </ul>
+                        </li>
                     End If
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>

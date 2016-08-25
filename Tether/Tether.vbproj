@@ -298,6 +298,7 @@
     <Content Include="Views\Requests\Create.vbhtml" />
     <Content Include="Views\Requests\Index.vbhtml" />
     <Content Include="Views\Requests\Pending.vbhtml" />
+    <Content Include="Views\Requests\Rejected.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
