@@ -13,16 +13,10 @@ Public Class TetherDBContext
         'Link back AspNetUsers to Schedules
         modelBuilder.Entity(Of Schedule)().HasRequired(Function(m) m.AspNetUser).
             WithMany(Function(t) t.Schedules).HasForeignKey(Function(m) m.AspNetUserId).WillCascadeOnDelete(False)
-
-        'modelBuilder.Entity(Of Booking)().HasRequired(Function(m) m.StudentSchedule).
-        '    WithRequiredDependent(Function(t) t.Booking).Map(Function(m) m.MapKey()
-        '.WillCascadeOnDelete(False)
-
-        'modelBuilder.Entity(Of Booking)().HasRequired(Function(m) m.TutorSchedule).
-        '    WithRequiredDependent(Function(t) t.Booking).WillCascadeOnDelete(False)
     End Sub
     Public Property Schedules As System.Data.Entity.DbSet(Of Schedule)
     Public Property ScheduleRequests As System.Data.Entity.DbSet(Of ScheduleRequest)
+    Public Property Messages As System.Data.Entity.DbSet(Of Message)
     Public Property AspNetUsers As System.Data.Entity.DbSet(Of AspNetUser)
 
 End Class

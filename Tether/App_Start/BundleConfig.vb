@@ -32,6 +32,9 @@ Public Module BundleConfig
         bundles.Add(New StyleBundle("~/Content/fullcalendarprint").Include(
                   "~/Content/fullcalendar.print.css"))
 
+        bundles.Add(New StyleBundle("~/Content/messaging").Include(
+                  "~/Content/messaging.css"))
+
         bundles.Add(New StyleBundle("~/Content/css").Include(
                   "~/Content/bootstrap.css",
                   "~/Content/site.css"))

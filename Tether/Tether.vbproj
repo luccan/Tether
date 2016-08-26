@@ -191,13 +191,14 @@
     <Compile Include="Controllers\AccountController.vb" />
     <Compile Include="Controllers\ManageController.vb" />
     <Compile Include="Controllers\RequestsController.vb" />
+    <Compile Include="Controllers\MessagesController.vb" />
     <Compile Include="Controllers\SchedulesController.vb" />
     <Compile Include="Global.asax.vb">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.vb" />
     <Compile Include="Models\AspNetUsers.vb" />
-    <Compile Include="Models\BookingModel.vb" />
+    <Compile Include="Models\MessageModels.vb" />
     <Compile Include="Models\TetherDBContext.vb" />
     <Compile Include="Models\IdentityModels.vb" />
     <Compile Include="Models\ManageViewModels.vb" />
@@ -250,6 +251,7 @@
     <Content Include="Content\cupertino\jquery-ui.min.css" />
     <Content Include="Content\fullcalendar.css" />
     <Content Include="Content\fullcalendar.print.css" />
+    <Content Include="Content\messaging.css" />
     <Content Include="Content\tetherfullcalendar.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -299,6 +301,8 @@
     <Content Include="Views\Requests\Index.vbhtml" />
     <Content Include="Views\Requests\Pending.vbhtml" />
     <Content Include="Views\Requests\Rejected.vbhtml" />
+    <Content Include="Views\Messages\Index.vbhtml" />
+    <Content Include="Views\Messages\Chat.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
