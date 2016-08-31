@@ -53,6 +53,14 @@ Namespace Controllers
             Dim Model = db.Messages.Where(Function(m) (m.AspNetUserFromId = UserId And m.AspNetUserToId = ChatUser.Id) _
                                               Or (m.AspNetUserToId = UserId And m.AspNetUserFromId = ChatUser.Id)).
                                           OrderBy(Function(m) m.DateTimeCreated)
+            Dim UnseenIncomingMessages = Model.Where(Function(m) m.AspNetUserToId = UserId And m.Seen = False).ToList()
+            If (UnseenIncomingMessages.Count > 0) Then
+                For Each Message In UnseenIncomingMessages
+                    db.Entry(Message).State = Entity.EntityState.Modified
+                    Message.Seen = True
+                Next
+                db.SaveChanges()
+            End If
             ViewBag.UserToId = ChatUser.Id
             ViewBag.Messages = Model.ToList()
         End Sub
