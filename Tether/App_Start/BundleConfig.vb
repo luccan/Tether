@@ -19,6 +19,9 @@ Public Module BundleConfig
                   "~/Scripts/bootstrap.js",
                   "~/Scripts/respond.js"))
 
+        bundles.Add(New ScriptBundle("~/bundles/blog").Include(
+                  "~/Scripts/tinymce.min.js"))
+
         bundles.Add(New StyleBundle("~/Content/cn_component").Include(
                   "~/Content/cn_component.css"))
 
