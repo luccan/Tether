@@ -18,16 +18,33 @@ Namespace Controllers
         Private db As New TetherDBContext
 
         ' GET: Requests
-        Function Index() As ActionResult
+        Function Index(Optional UserName As String = Nothing) As ActionResult
             Dim UserId As String = User.Identity.GetUserId()
-            Dim Model = db.Messages.Where(Function(m) m.AspNetUserFromId = UserId Or m.AspNetUserToId = UserId).OrderBy(Function(m) m.DateTimeCreated)
+            Dim Model = db.Messages.Where(Function(m) m.AspNetUserFromId = UserId Or m.AspNetUserToId = UserId).OrderByDescending(Function(m) m.DateTimeCreated).ToList()
             Dim ChatUsers As New List(Of AspNetUser)
-            For Each m In Model.ToList()
+            For Each m In Model
                 Dim ChatBuddy = IIf(m.AspNetUserFromId = UserId, m.AspNetUserTo, m.AspNetUserFrom)
                 If Not ChatUsers.Contains(ChatBuddy) Then
                     ChatUsers.Add(ChatBuddy)
                 End If
             Next
+            If (Model.Count > 0) Then
+                Dim message As Message = Model.FirstOrDefault()
+                If (UserName IsNot Nothing) Then
+                    message = Model.Where(Function(m) m.AspNetUserFrom.UserName = UserName Or m.AspNetUserTo.UserName = UserName).ToList().FirstOrDefault()
+                End If
+                If (message IsNot Nothing) Then
+                    If (message.AspNetUserFromId <> UserId) Then
+                        ViewBag.ChatUser = message.AspNetUserFrom
+                    ElseIf (message.AspNetUserToId <> UserId) Then
+                        ViewBag.ChatUser = message.AspNetUserTo
+                    End If
+                Else
+                    RedirectToAction("Index")
+                End If
+            Else
+                ViewBag.ChatUser = Nothing
+            End If
             Return View(ChatUsers)
         End Function
 

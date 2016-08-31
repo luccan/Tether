@@ -13,6 +13,14 @@
 
 }
 
+div.media.conversation{
+    cursor:pointer;
+    cursor:hand;
+}
+div.media.conversation:hover{
+    background-color:aliceblue;
+}
+
 .message-wrap
 {
     box-shadow: 0 0 3px #ddd;
